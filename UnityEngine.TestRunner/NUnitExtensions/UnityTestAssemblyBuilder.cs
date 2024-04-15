@@ -65,6 +65,8 @@ namespace UnityEngine.TestTools.NUnitExtensions
         {
             var productName = string.Join("_", m_ProductName.Split(Path.GetInvalidFileNameChars()));
             var suite = new TestSuite(productName);
+
+            var stopwatch = System.Diagnostics.Stopwatch.StartNew();
             for (var index = 0; index < assemblies.Length; index++)
             {
                 var assembly = assemblies[index];
@@ -90,7 +92,12 @@ namespace UnityEngine.TestTools.NUnitExtensions
                     }
                 }
 
-                yield return null;
+                // Yield a frame only if we've spent 10 ms or more here
+                if (stopwatch.ElapsedMilliseconds >= 10)
+                {
+                    yield return null;
+                    stopwatch.Restart();
+                }
             }
 
             suite.ParseForNameDuplicates();
