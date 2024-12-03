@@ -92,6 +92,9 @@ namespace UnityEditor.TestTools.TestRunner.GUI
             }
             if (childrenResult.Any(x => x.resultStatus == ResultStatus.Inconclusive)) resultStatus = ResultStatus.Inconclusive;
             if (childrenResult.Any(x => x.resultStatus == ResultStatus.Failed)) resultStatus = ResultStatus.Failed;
+
+            duration = childrenResult.Sum(x => x.duration);
+
             UpdateParentResult(results);
         }
 
